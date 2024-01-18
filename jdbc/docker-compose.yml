@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: password1
+      MYSQL_DATABASE: SecurityDatabase
+    ports:
+      - '10012:3306'
+    networks:
+      - learn-security
+    healthcheck:
+      test: "echo hello"
+
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '10011:8080'
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - learn-security
+
+
+networks:
+  learn-security:
+    driver: bridge
