@@ -21,10 +21,6 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private boolean isEnabled;
 
-    public Long getId() {
-        return id;
-    }
-
     public Users() {
         isEnabled = true;
     }
@@ -33,6 +29,10 @@ public class Users implements UserDetails {
         this();
         this.username = username;
         this.password = password;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -50,19 +50,20 @@ public class Users implements UserDetails {
         return username;
     }
 
+    // return true for test
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
