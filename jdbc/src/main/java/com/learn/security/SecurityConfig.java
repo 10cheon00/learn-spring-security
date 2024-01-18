@@ -12,11 +12,6 @@ public class SecurityConfig {
     public CustomeUserDetailsService userDetailsService(){
         return new CustomeUserDetailsService();
     }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
 
 /*
