@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: mysql
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    ports:
+      - '10012:3306'
+    networks:
+      - spring
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
+  app:
+    container_name: app
+    build:
+      args:
+        - JAR_FILE=./../../build/libs/*.jar
+      context: ./app/../../
+      dockerfile: ./deploy/app/Dockerfile
+    environment:
+      - 'SPRING_PROFILES_ACTIVE=deploy'
+    ports:
+      - '10011:8080'
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - spring
+
+networks:
+  spring:
+    # driver: bridge
