@@ -7,7 +7,7 @@ services:
       context: ./db
       dockerfile: Dockerfile
     ports:
-      - '10012:3306'
+      - '12345:3306'
     networks:
       - spring
     healthcheck:
