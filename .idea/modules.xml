@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/jdbc/src/main/java/com/learn/security/controller/controller.iml" filepath="$PROJECT_DIR$/jdbc/src/main/java/com/learn/security/controller/controller.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/learn-spring-security.iml" filepath="$PROJECT_DIR$/.idea/learn-spring-security.iml" />
     </modules>
   </component>
