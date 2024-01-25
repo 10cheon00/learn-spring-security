@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/users/**").hasAuthority("READ")
                         .requestMatchers("/sample/**").hasRole("ADMIN")
+                        .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll());
         return http.build();
     }

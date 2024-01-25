@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/sample")
-public class SampleController {
+@RequestMapping("")
+public class MainPageController {
+
     @GetMapping("")
     @ResponseBody
     public String sampleAdminPage() {
-        return "this is sample admin page.";
+        return "MainPage MainPage MainPage \nMainPage MainPage MainPage MainPage MainPage MainPage MainPage MainPage MainPage \nMainPage MainPage MainPage MainPage ";
     }
+
 }
