@@ -27,7 +27,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/users/**").hasAuthority("USER")
+                        .requestMatchers("/users/**").hasAuthority("READ")
+                        .requestMatchers("/sample/**").hasRole("ADMIN")
                         .anyRequest().denyAll());
         return http.build();
     }

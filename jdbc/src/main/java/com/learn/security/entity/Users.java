@@ -1,7 +1,9 @@
 package com.learn.security.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -19,7 +21,8 @@ public class Users implements UserDetails {
     private String password;
     @Column(nullable = false)
     private boolean isEnabled;
-    @Column(nullable = false)
+    @Column
+    @ColumnDefault("'ROLE_USER'")
     private String role;
 
     public Users() {
@@ -39,7 +42,9 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        ArrayList<SimpleGrantedAuthority>authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(getRole()));
+        return authorities;
     }
 
     @Override
@@ -50,6 +55,10 @@ public class Users implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     // return true for test
