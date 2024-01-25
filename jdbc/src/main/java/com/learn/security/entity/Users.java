@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Users implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String username;
@@ -17,15 +19,18 @@ public class Users implements UserDetails {
     private String password;
     @Column(nullable = false)
     private boolean isEnabled;
+    @Column(nullable = false)
+    private String role;
 
     public Users() {
         isEnabled = true;
     }
 
-    public Users(String username, String password) {
+    public Users(String username, String password, String role) {
         this();
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
