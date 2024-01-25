@@ -7,13 +7,9 @@ services:
       context: ./db
       dockerfile: Dockerfile
     ports:
-<<<<<<< Updated upstream
       - '12345:3306'
     networks:
       - spring
-=======
-      - '10012:3306'
->>>>>>> Stashed changes
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
