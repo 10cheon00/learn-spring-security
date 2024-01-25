@@ -4,6 +4,10 @@ import com.learn.security.service.CustomUserDetailsService;
 import jakarta.servlet.DispatcherType.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +32,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/users/**").hasAuthority("READ")
-                        .requestMatchers("/sample/**").hasRole("ADMIN")
+                        .requestMatchers("/sample/**").hasRole("USER")
                         .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll());
         return http.build();
@@ -37,6 +41,21 @@ public class SecurityConfig {
     @Bean
     public CustomUserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
+    }
+
+    @Bean
+    static RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return hierarchy;
+    }
+
+    // and, if using method security also add
+    @Bean
+    static MethodSecurityExpressionHandler methodSecurityExpressionHandler(RoleHierarchy roleHierarchy) {
+        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy);
+        return expressionHandler;
     }
 }
 
