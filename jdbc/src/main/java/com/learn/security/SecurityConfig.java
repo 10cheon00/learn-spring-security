@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/users/**").hasAuthority("ROLE_MASTER")
-                        .requestMatchers("/sample/**").hasRole("USER")
+                        .requestMatchers("/users/**").hasAuthority("ROLE_USER")
+                        .requestMatchers("/sample/**").hasRole("ADMIN")
                         .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll());
         return http.build();
@@ -73,3 +73,4 @@ AuthenticationProvider는 특정한 인증 절차를 구현하기 위해 정의�
 DaoAuthenticationProvider는 UserDetailsService로부터 UserDetail 즉 사용자 정보를 갖고 올 수 있게 하는 AuthenticationProvider의 구현체다.
 
  */
+

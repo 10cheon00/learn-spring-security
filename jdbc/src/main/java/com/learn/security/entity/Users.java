@@ -1,9 +1,7 @@
 package com.learn.security.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -21,19 +19,22 @@ public class Users implements UserDetails {
     private String password;
     @Column(nullable = false)
     private boolean isEnabled;
-    @Column
-    @ColumnDefault("'ROLE_USER'")
-    private String role;
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
+    private List<Roles> userRoles;
 
     public Users() {
         isEnabled = true;
     }
 
-    public Users(String username, String password, String role) {
+    public Users(String username, String password) {
         this();
         this.username = username;
         this.password = password;
-        this.role = role;
     }
 
     public Long getId() {
@@ -42,9 +43,7 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<SimpleGrantedAuthority>authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(getRole()));
-        return authorities;
+        return new ArrayList<Roles>(userRoles);
     }
 
     @Override
@@ -55,10 +54,6 @@ public class Users implements UserDetails {
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public String getRole() {
-        return role;
     }
 
     // return true for test
