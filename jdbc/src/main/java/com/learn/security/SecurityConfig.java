@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/users/**").hasAuthority("READ")
+                        .requestMatchers("/users/**").hasAuthority("ROLE_MASTER")
                         .requestMatchers("/sample/**").hasRole("USER")
                         .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll());
@@ -45,8 +45,12 @@ public class SecurityConfig {
 
     @Bean
     static RoleHierarchy roleHierarchy() {
+        /*
+        role과 role사이에 있는 관계를 정의한다.
+         */
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
         hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        hierarchy.setHierarchy("ROLE_MASTER > ROLE_SLAVE");
         return hierarchy;
     }
 
