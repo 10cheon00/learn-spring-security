@@ -33,8 +33,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 토큰이 요청에 담겨있고 유효한지 검사
         String token = getJwtFromRequest(request);
         if (StringUtils.hasText(token) && jwtGenerator.validateToken(token)) {
-            // jwt 필터를 통해 SecurityContext의 authentication을 설정
-            // 이걸 하는 이유는 다음 필터들이 활용할 수 있기 때문에(ex. Authorization)
+            /*
+            jwt 필터를 통해 SecurityContext의 authentication을 설정
+            이걸 하는 이유는 다음 필터들이 활용할 수 있기 때문일까?
+            아래 코드들 전부 주석처리하면 Username + password 로 인증하는 필터때문에 막힌다.
+            그래서 어쩔 수 없이 미리 UserDetails를 갖고 온 후 직접 Context에 저장하는 처리를 해야한다.
+             */
             String username = jwtGenerator.getUsernameFromJWT(token);
             UserDetails userDetails = userService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -44,7 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        System.out.println("token :: " + token);
         filterChain.doFilter(request, response);
     }
 

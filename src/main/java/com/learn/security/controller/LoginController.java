@@ -27,15 +27,9 @@ public class LoginController {
         this.jwtGenerator = jwtGenerator;
     }
 
-    @GetMapping("")
+    @PostMapping("/signup")
     @ResponseBody
-    public String test() {
-        return "test";
-    }
-
-    @PostMapping("")
-    @ResponseBody
-    public User join(@RequestBody User user) {
+    public User signup(@RequestBody User user) {
         Optional<User> joinedUser = userService.join(user);
         return joinedUser.get();
     }
@@ -45,19 +39,17 @@ public class LoginController {
     @ResponseBody
     public AuthResponseDTO signIn(@RequestBody User user) {
         /*
-        기본적으로 Username + Password로 인증을 진행할 때에는
-        내부 필터에서 AuthenticationManager가 직접 authenticate를 실행하여
-        유효한 사용자인지 판단했다.
-        그런 인증 절차를 거친 후에 토큰을 생성하여 반환한다.
+        인증 절차를 거친 후에 토큰을 생성하여 반환한다.
+        토큰 생성을 하려면 사용자가 보낸 username과 password가 유효한지 검증(authenticate)해야하기 때문이다.
          */
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(),
                         user.getPassword()
                 ));
+        // 단순 검증만 하면 모를까 왜 Authentication을 설정하는지 모르겠다.
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        System.out.println(token);
         return new AuthResponseDTO(token);
     }
 
