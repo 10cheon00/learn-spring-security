@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             /*
             jwt 필터를 통해 SecurityContext의 authentication을 설정
             이걸 하는 이유는 다음 필터들이 활용할 수 있기 때문일까?
-            아래 코드들 전부 주석처리하면 Username + password 로 인증하는 필터때문에 막힌다.
+            로그인 요청이 아닌 상황에서는 아이디랑 비밀번호가 없으므로 어느 부분에서 Authentication을 요구하는 필터가 실행되기 때문에 에러를 낸다.
             그래서 어쩔 수 없이 미리 UserDetails를 갖고 온 후 직접 Context에 저장하는 처리를 해야한다.
              */
             String username = jwtGenerator.getUsernameFromJWT(token);

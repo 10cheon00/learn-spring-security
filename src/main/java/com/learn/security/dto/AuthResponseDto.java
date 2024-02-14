@@ -1,10 +1,10 @@
-package com.learn.security;
+package com.learn.security.dto;
 
-public class AuthResponseDTO {
+public class AuthResponseDto {
     private final String accessToken;
     private String tokenType;
 
-    public AuthResponseDTO(String accessToken) {
+    public AuthResponseDto(String accessToken) {
         this.accessToken = accessToken;
     }
 

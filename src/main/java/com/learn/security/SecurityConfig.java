@@ -49,10 +49,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // LoginController에서 로그인할 때 토큰 발급을 위해
+    // 사용자 계정정보를 authenticate한다.
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
 
     @Bean
     public UserService userDetailsService() {
